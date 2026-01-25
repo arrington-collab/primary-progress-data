@@ -1,29 +1,162 @@
 {
-  "lastUpdated": "2026-01-25T07:15:54.939Z",
-  "totalChildren": 2,
+  "lastUpdated": "2026-01-25T07:18:54.455Z",
+  "totalChildren": 25,
   "totalCompleted": 0,
-  "totalArticles": 7,
+  "totalArticles": 2,
   "children": [
     {
       "id": 1,
-      "nombre": "Juan Pérez",
-      "progreso": 6,
-      "articulosCompletados": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ]
-    },
-    {
-      "id": 2,
-      "nombre": "Maria Garcia",
+      "nombre": "Joshua",
       "progreso": 1,
       "articulosCompletados": [
         1
       ]
+    },
+    {
+      "id": 2,
+      "nombre": "Jamilet",
+      "progreso": 1,
+      "articulosCompletados": [
+        1
+      ]
+    },
+    {
+      "id": 3,
+      "nombre": "Yaretzi",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 4,
+      "nombre": "Adrian",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 5,
+      "nombre": "Emma",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 6,
+      "nombre": "Fabrizio",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 7,
+      "nombre": "Alyson",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 8,
+      "nombre": "Jacqueline",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 9,
+      "nombre": "Kemish",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 10,
+      "nombre": "Alyssa",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 11,
+      "nombre": "Carlos",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 12,
+      "nombre": "Dean",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 13,
+      "nombre": "Reed",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 14,
+      "nombre": "Alina",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 15,
+      "nombre": "Natalia",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 16,
+      "nombre": "Kaizen",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 17,
+      "nombre": "Abigail",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 18,
+      "nombre": "Roman",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 19,
+      "nombre": "Oliver",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 20,
+      "nombre": "Cayden",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 21,
+      "nombre": "Edinson",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 22,
+      "nombre": "Abner",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 23,
+      "nombre": "Abie",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 24,
+      "nombre": "Caleb",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 25,
+      "nombre": "Aziel",
+      "progreso": 0,
+      "articulosCompletados": []
     }
   ]
 }
