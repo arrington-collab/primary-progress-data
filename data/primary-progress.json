@@ -1,6 +1,6 @@
 {
-  "lastUpdated": "2026-01-25T07:21:54.519Z",
-  "totalChildren": 25,
+  "lastUpdated": "2026-01-25T07:24:54.837Z",
+  "totalChildren": 26,
   "totalCompleted": 0,
   "totalArticles": 0,
   "children": [
@@ -151,6 +151,12 @@
     {
       "id": 25,
       "nombre": "Aziel",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 26,
+      "nombre": "Lirielle",
       "progreso": 0,
       "articulosCompletados": []
     }
