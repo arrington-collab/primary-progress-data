@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Artículos de Fe - Primary Progress Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Quicksand', sans-serif; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%); }
+    .font-display { font-family: 'Cinzel', serif; }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(59,130,246,0.2); } 50% { box-shadow: 0 0 40px rgba(250,204,21,0.6); } }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+    .animate-float { animation: float 3s ease-in-out infinite; }
+    .card { background: linear-gradient(135deg, rgba(15,23,42,0.9) 0%, rgba(30,58,138,0.8) 50%, rgba(15,23,42,0.9) 100%); }
+    .card-complete { border-color: rgba(250,204,21,0.6); box-shadow: 0 0 30px rgba(250,204,21,0.3); }
+    .card-incomplete { border-color: rgba(59,130,246,0.3); box-shadow: 0 0 20px rgba(59,130,246,0.2); }
+    .progress-complete { background: linear-gradient(90deg, #eab308, #fbbf24, #fcd34d); }
+    .progress-incomplete { background: linear-gradient(90deg, #2563eb, #3b82f6, #22d3ee); }
+    .circle-complete { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #0f172a; box-shadow: 0 0 12px rgba(250,204,21,0.5); }
+    .circle-incomplete { background: rgba(51,65,85,0.6); color: rgba(100,116,139,1); border: 1px solid rgba(71,85,105,0.5); }
+  </style>
+</head>
+<body class="min-h-screen text-white">
+  <div id="app" class="relative z-10 h-screen flex flex-col p-8">
+    <!-- Header -->
+    <header class="text-center mb-8 flex-shrink-0">
+      <div class="flex items-center justify-center gap-4 mb-4">
+        <div class="h-px w-24 bg-gradient-to-r from-transparent via-yellow-400/50 to-yellow-400"></div>
+        <svg class="w-6 h-6 text-yellow-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.4 8.6L21.5 9.5L16.5 14.5L17.8 21.5L12 18.2L6.2 21.5L7.5 14.5L2.5 9.5L9.6 8.6L12 2Z"/></svg>
+        <div class="h-px w-24 bg-gradient-to-l from-transparent via-yellow-400/50 to-yellow-400"></div>
+      </div>
+      <h1 class="font-display text-6xl font-bold mb-3 tracking-tight bg-gradient-to-r from-yellow-300 via-yellow-400 to-amber-400 bg-clip-text text-transparent" style="filter: drop-shadow(0 0 30px rgba(250,204,21,0.4));">
+        Mis Artículos de Fe
+      </h1>
+      <p class="text-xl text-blue-200/80 font-light tracking-widest uppercase">Ward Primary Progress</p>
+      
+      <!-- Stats -->
+      <div id="stats" class="flex justify-center gap-12 mt-6">
+        <div class="text-center">
+          <div id="completed-count" class="text-3xl font-bold text-yellow-400">0</div>
+          <div class="text-sm text-blue-300/60 uppercase tracking-wider">Completados</div>
+        </div>
+        <div class="text-center">
+          <div id="children-count" class="text-3xl font-bold text-blue-400">0</div>
+          <div class="text-sm text-blue-300/60 uppercase tracking-wider">Niños</div>
+        </div>
+        <div class="text-center">
+          <div id="articles-count" class="text-3xl font-bold text-cyan-400">0</div>
+          <div class="text-sm text-blue-300/60 uppercase tracking-wider">Artículos Memorizados</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Cards Grid -->
+    <div id="cards-container" class="flex-1 overflow-y-auto scrollbar-hide">
+      <div id="cards-grid" class="grid grid-cols-4 gap-5 pb-8">
+        <!-- Cards will be inserted here -->
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center pt-4 flex-shrink-0 border-t border-blue-500/20">
+      <div class="flex items-center justify-center gap-2 text-blue-300/50">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <span id="last-updated" class="text-sm">Cargando...</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Loading overlay -->
+  <div id="loading" class="fixed inset-0 bg-slate-950 flex items-center justify-center z-50">
+    <div class="text-center">
+      <div class="text-6xl mb-4 animate-float">⭐</div>
+      <div class="text-2xl text-blue-300/50">Cargando datos...</div>
+    </div>
+  </div>
+
+  <script>
+    const DATA_URL = './data/primary-progress.json';
+    const REFRESH_INTERVAL = 30000;
+
+    function createCard(child) {
+      const isComplete = child.progreso === 13;
+      const progressPercent = (child.progreso / 13) * 100;
+      
+      let circlesHtml = '';
+      for (let i = 1; i <= 13; i++) {
+        const completed = child.articulosCompletados.includes(i);
+        circlesHtml += `<div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${completed ? 'circle-complete' : 'circle-incomplete'}">${i}</div>`;
+      }
+
+      return `
+        <div class="card rounded-2xl p-5 border-2 ${isComplete ? 'card-complete' : 'card-incomplete'} relative overflow-hidden">
+          ${isComplete ? '<svg class="absolute -top-1 -right-1 w-8 h-8 text-yellow-400" style="filter: drop-shadow(0 0 8px rgba(250,204,21,0.8));" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.4 8.6L21.5 9.5L16.5 14.5L17.8 21.5L12 18.2L6.2 21.5L7.5 14.5L2.5 9.5L9.6 8.6L12 2Z"/></svg>' : ''}
+          <h3 class="font-display text-xl font-bold text-white mb-3 tracking-wide">${child.nombre}</h3>
+          <div class="relative h-4 bg-slate-800/80 rounded-full overflow-hidden mb-4 border border-blue-500/20">
+            <div class="h-full rounded-full ${isComplete ? 'progress-complete' : 'progress-incomplete'}" style="width: ${progressPercent}%;"></div>
+          </div>
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-blue-200/80 text-sm font-medium">Progreso</span>
+            <span class="font-bold text-lg ${isComplete ? 'text-yellow-400' : 'text-blue-300'}">${child.progreso} / 13</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5 justify-center">${circlesHtml}</div>
+        </div>
+      `;
+    }
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('es-ES', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+      });
+    }
+
+    async function fetchData() {
+      try {
+        const response = await fetch(DATA_URL + '?t=' + Date.now());
+        if (!response.ok) throw new Error('Failed to fetch');
+        const data = await response.json();
+        
+        // Update stats
+        document.getElementById('completed-count').textContent = data.children.filter(c => c.progreso === 13).length;
+        document.getElementById('children-count').textContent = data.children.length;
+        document.getElementById('articles-count').textContent = data.children.reduce((sum, c) => sum + c.progreso, 0);
+        document.getElementById('last-updated').textContent = 'Última actualización: ' + formatDate(data.lastUpdated);
+        
+        // Update cards
+        const cardsHtml = data.children.map(createCard).join('');
+        document.getElementById('cards-grid').innerHTML = cardsHtml;
+        
+        // Hide loading
+        document.getElementById('loading').style.display = 'none';
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('loading').innerHTML = `
+          <div class="text-center">
+            <div class="text-6xl mb-4">⚠️</div>
+            <div class="text-2xl text-red-400/80">Error cargando datos</div>
+            <div class="text-sm text-blue-300/50 mt-2">Reintentando...</div>
+          </div>
+        `;
+      }
+    }
+
+    // Initial fetch
+    fetchData();
+    
+    // Refresh every 30 seconds
+    setInterval(fetchData, REFRESH_INTERVAL);
+  </script>
+</body>
+</html>
