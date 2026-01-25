@@ -1,19 +1,14 @@
 {
-  "lastUpdated": "2026-01-25T08:03:54.458Z",
+  "lastUpdated": "2026-01-25T08:06:54.904Z",
   "totalChildren": 26,
-  "totalCompleted": 1,
-  "totalArticles": 33,
+  "totalCompleted": 0,
+  "totalArticles": 0,
   "children": [
     {
       "id": 1,
       "nombre": "Joshua",
-      "progreso": 4,
-      "articulosCompletados": [
-        1,
-        2,
-        3,
-        4
-      ]
+      "progreso": 0,
+      "articulosCompletados": []
     },
     {
       "id": 2,
@@ -30,13 +25,8 @@
     {
       "id": 4,
       "nombre": "Adrian",
-      "progreso": 4,
-      "articulosCompletados": [
-        1,
-        2,
-        3,
-        4
-      ]
+      "progreso": 0,
+      "articulosCompletados": []
     },
     {
       "id": 5,
@@ -47,12 +37,8 @@
     {
       "id": 6,
       "nombre": "Fabrizio",
-      "progreso": 3,
-      "articulosCompletados": [
-        1,
-        2,
-        3
-      ]
+      "progreso": 0,
+      "articulosCompletados": []
     },
     {
       "id": 7,
@@ -75,18 +61,8 @@
     {
       "id": 10,
       "nombre": "Alyssa",
-      "progreso": 9,
-      "articulosCompletados": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9
-      ]
+      "progreso": 0,
+      "articulosCompletados": []
     },
     {
       "id": 11,
@@ -97,22 +73,8 @@
     {
       "id": 12,
       "nombre": "Dean",
-      "progreso": 13,
-      "articulosCompletados": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13
-      ]
+      "progreso": 0,
+      "articulosCompletados": []
     },
     {
       "id": 13,
