@@ -1,32 +1,26 @@
 {
-  "lastUpdated": "2026-01-25T07:27:54.540Z",
+  "lastUpdated": "2026-01-25T07:30:54.016Z",
   "totalChildren": 26,
   "totalCompleted": 0,
-  "totalArticles": 14,
+  "totalArticles": 0,
   "children": [
     {
       "id": 1,
       "nombre": "Joshua",
-      "progreso": 1,
-      "articulosCompletados": [
-        1
-      ]
+      "progreso": 0,
+      "articulosCompletados": []
     },
     {
       "id": 2,
       "nombre": "Jamilet",
-      "progreso": 1,
-      "articulosCompletados": [
-        1
-      ]
+      "progreso": 0,
+      "articulosCompletados": []
     },
     {
       "id": 3,
       "nombre": "Yaretzi",
-      "progreso": 1,
-      "articulosCompletados": [
-        1
-      ]
+      "progreso": 0,
+      "articulosCompletados": []
     },
     {
       "id": 4,
@@ -43,12 +37,8 @@
     {
       "id": 6,
       "nombre": "Fabrizio",
-      "progreso": 3,
-      "articulosCompletados": [
-        1,
-        2,
-        3
-      ]
+      "progreso": 0,
+      "articulosCompletados": []
     },
     {
       "id": 7,
@@ -65,27 +55,20 @@
     {
       "id": 9,
       "nombre": "Kemish",
-      "progreso": 1,
-      "articulosCompletados": [
-        1
-      ]
+      "progreso": 0,
+      "articulosCompletados": []
     },
     {
       "id": 10,
       "nombre": "Alyssa",
-      "progreso": 1,
-      "articulosCompletados": [
-        1
-      ]
+      "progreso": 0,
+      "articulosCompletados": []
     },
     {
       "id": 11,
       "nombre": "Carlos",
-      "progreso": 2,
-      "articulosCompletados": [
-        1,
-        2
-      ]
+      "progreso": 0,
+      "articulosCompletados": []
     },
     {
       "id": 12,
@@ -96,13 +79,8 @@
     {
       "id": 13,
       "nombre": "Reed",
-      "progreso": 4,
-      "articulosCompletados": [
-        1,
-        2,
-        3,
-        4
-      ]
+      "progreso": 0,
+      "articulosCompletados": []
     },
     {
       "id": 14,
