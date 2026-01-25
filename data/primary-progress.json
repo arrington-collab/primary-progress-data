@@ -1,25 +1,29 @@
 {
-  "lastUpdated": "2026-01-25T07:06:29.455Z",
+  "lastUpdated": "2026-01-25T07:09:54.493Z",
   "totalChildren": 2,
   "totalCompleted": 0,
-  "totalArticles": 4,
+  "totalArticles": 7,
   "children": [
     {
       "id": 1,
       "nombre": "Juan Pérez",
-      "progreso": 4,
+      "progreso": 6,
       "articulosCompletados": [
         1,
         2,
         3,
-        4
+        4,
+        5,
+        6
       ]
     },
     {
       "id": 2,
       "nombre": "Maria Garcia",
-      "progreso": 0,
-      "articulosCompletados": []
+      "progreso": 1,
+      "articulosCompletados": [
+        1
+      ]
     }
   ]
 }
