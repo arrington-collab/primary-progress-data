@@ -1,14 +1,18 @@
 {
-  "lastUpdated": "2026-02-04T15:00:04.023Z",
+  "lastUpdated": "2026-02-05T02:11:28.359Z",
   "totalChildren": 28,
   "totalCompleted": 0,
-  "totalArticles": 0,
+  "totalArticles": 3,
   "children": [
     {
       "id": 1,
       "nombre": "Joshua",
-      "progreso": 0,
-      "articulosCompletados": []
+      "progreso": 3,
+      "articulosCompletados": [
+        1,
+        2,
+        3
+      ]
     },
     {
       "id": 2,
