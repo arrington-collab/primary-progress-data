@@ -1,8 +1,8 @@
 {
-  "lastUpdated": "2026-02-05T02:11:28.359Z",
+  "lastUpdated": "2026-02-05T02:11:48.046Z",
   "totalChildren": 28,
   "totalCompleted": 0,
-  "totalArticles": 3,
+  "totalArticles": 8,
   "children": [
     {
       "id": 1,
@@ -41,14 +41,21 @@
     {
       "id": 6,
       "nombre": "Fabrizio",
-      "progreso": 0,
-      "articulosCompletados": []
+      "progreso": 3,
+      "articulosCompletados": [
+        1,
+        2,
+        3
+      ]
     },
     {
       "id": 7,
       "nombre": "Alyson",
-      "progreso": 0,
-      "articulosCompletados": []
+      "progreso": 2,
+      "articulosCompletados": [
+        1,
+        2
+      ]
     },
     {
       "id": 8,
