@@ -1,18 +1,14 @@
 {
-  "lastUpdated": "2026-02-12T15:00:03.603Z",
+  "lastUpdated": "2026-02-13T03:00:34.734Z",
   "totalChildren": 28,
   "totalCompleted": 0,
-  "totalArticles": 8,
+  "totalArticles": 0,
   "children": [
     {
       "id": 1,
       "nombre": "Joshua",
-      "progreso": 3,
-      "articulosCompletados": [
-        1,
-        2,
-        3
-      ]
+      "progreso": 0,
+      "articulosCompletados": []
     },
     {
       "id": 2,
@@ -41,21 +37,14 @@
     {
       "id": 6,
       "nombre": "Fabrizio",
-      "progreso": 3,
-      "articulosCompletados": [
-        1,
-        2,
-        3
-      ]
+      "progreso": 0,
+      "articulosCompletados": []
     },
     {
       "id": 7,
       "nombre": "Alyson",
-      "progreso": 2,
-      "articulosCompletados": [
-        1,
-        2
-      ]
+      "progreso": 0,
+      "articulosCompletados": []
     },
     {
       "id": 8,
