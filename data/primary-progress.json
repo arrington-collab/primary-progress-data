@@ -1,6 +1,6 @@
 {
-  "lastUpdated": "2026-03-22T16:00:22.753Z",
-  "totalChildren": 28,
+  "lastUpdated": "2026-03-22T17:00:02.515Z",
+  "totalChildren": 31,
   "totalCompleted": 0,
   "totalArticles": 5,
   "children": [
@@ -170,13 +170,31 @@
     },
     {
       "id": 27,
-      "nombre": "https://arrington-collab.github.io/primary-progress-data/",
+      "nombre": "Abigail Rios",
       "progreso": 0,
       "articulosCompletados": []
     },
     {
       "id": 28,
-      "nombre": "https://arrington-collab.github.io/primary-progress-data/kanban.html",
+      "nombre": "Marbella Islas",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 29,
+      "nombre": "Roxana Arrington",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 30,
+      "nombre": "Gabriela Rojas",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 31,
+      "nombre": "Perla Ávalos",
       "progreso": 0,
       "articulosCompletados": []
     }
