@@ -1,6 +1,6 @@
 {
-  "lastUpdated": "2026-03-22T17:00:02.515Z",
-  "totalChildren": 31,
+  "lastUpdated": "2026-03-22T17:05:36.130Z",
+  "totalChildren": 40,
   "totalCompleted": 0,
   "totalArticles": 5,
   "children": [
@@ -195,6 +195,60 @@
     {
       "id": 31,
       "nombre": "Perla Ávalos",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 32,
+      "nombre": "YolandaTeran",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 33,
+      "nombre": "Manuelita Andrade",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 34,
+      "nombre": "Lulù Uribe",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 35,
+      "nombre": "Nelly Escamilla",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 36,
+      "nombre": "Raquel Ávalos",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 37,
+      "nombre": "Jorge Ávalos ",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 38,
+      "nombre": "Mario Terán ",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 39,
+      "nombre": "Wendy Angel",
+      "progreso": 0,
+      "articulosCompletados": []
+    },
+    {
+      "id": 40,
+      "nombre": "Carla neville",
       "progreso": 0,
       "articulosCompletados": []
     }
