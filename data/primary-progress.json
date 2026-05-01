@@ -1,8 +1,8 @@
 {
-  "lastUpdated": "2026-04-26T03:00:41.793Z",
+  "lastUpdated": "2026-05-01T03:00:41.290Z",
   "totalChildren": 40,
   "totalCompleted": 0,
-  "totalArticles": 12,
+  "totalArticles": 26,
   "children": [
     {
       "id": 1,
@@ -73,8 +73,10 @@
     {
       "id": 10,
       "nombre": "Alyssa",
-      "progreso": 0,
-      "articulosCompletados": []
+      "progreso": 1,
+      "articulosCompletados": [
+        1
+      ]
     },
     {
       "id": 11,
@@ -187,14 +189,23 @@
     {
       "id": 28,
       "nombre": "Marbella Islas",
-      "progreso": 0,
-      "articulosCompletados": []
+      "progreso": 6,
+      "articulosCompletados": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
     },
     {
       "id": 29,
       "nombre": "Roxana Arrington",
-      "progreso": 0,
-      "articulosCompletados": []
+      "progreso": 1,
+      "articulosCompletados": [
+        1
+      ]
     },
     {
       "id": 30,
@@ -205,8 +216,15 @@
     {
       "id": 31,
       "nombre": "Perla Ávalos",
-      "progreso": 0,
-      "articulosCompletados": []
+      "progreso": 6,
+      "articulosCompletados": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
     },
     {
       "id": 32,
@@ -216,7 +234,7 @@
     },
     {
       "id": 33,
-      "nombre": "Manuelita Andrade",
+      "nombre": "Mario Terán",
       "progreso": 0,
       "articulosCompletados": []
     },
@@ -246,7 +264,7 @@
     },
     {
       "id": 38,
-      "nombre": "Mario Terán ",
+      "nombre": "Manuelita Andrade",
       "progreso": 0,
       "articulosCompletados": []
     },
