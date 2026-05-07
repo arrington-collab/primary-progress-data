@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEAL Workout Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:#0a1628;--navy-mid:#132240;--navy-light:#1c3461;
+    --gold:#c5a44e;--gold-light:#d4ba6a;--steel:#8a9bb5;--white:#e8ecf2;
+    --green:#2ecc71;--bg:#060d18;--cat1:#3a7bd5;--cat2:#e74c3c;--son:#e67e22;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--white);min-height:100vh}
+
+  /* ── Top bar ── */
+  .top-bar{background:var(--navy);display:flex;border-bottom:1px solid var(--navy-light)}
+  .person-tab{flex:1;font-family:'Oswald',sans-serif;font-weight:600;font-size:14px;letter-spacing:2px;
+    padding:14px 8px;border:none;background:var(--navy);color:var(--steel);cursor:pointer;text-align:center;
+    border-bottom:3px solid transparent;transition:all .2s;text-transform:uppercase}
+  .person-tab.active-dad{border-bottom-color:var(--gold);color:var(--gold)}
+  .person-tab.active-son{border-bottom-color:var(--son);color:var(--son)}
+
+  /* ── Phase tabs ── */
+  .phase-tabs{display:flex;background:var(--navy-mid);border-bottom:1px solid var(--navy-light)}
+  .phase-tab{flex:1;font-family:'Oswald',sans-serif;font-weight:500;font-size:11px;letter-spacing:1.5px;
+    padding:8px 4px;border:none;background:var(--navy-mid);color:var(--steel);cursor:pointer;text-align:center;
+    border-bottom:2px solid transparent;transition:all .2s;text-transform:uppercase}
+  .phase-tab.active-pre{border-bottom-color:var(--gold);color:var(--gold)}
+  .phase-tab.active-cat1{border-bottom-color:var(--cat1);color:var(--cat1)}
+  .phase-tab.active-cat2{border-bottom-color:var(--cat2);color:var(--cat2)}
+  .phase-tab.active-found{border-bottom-color:var(--son);color:var(--son)}
+
+  /* ── Week nav ── */
+  .nav{display:flex;gap:6px;padding:10px 12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;background:var(--navy)}
+  .nav::-webkit-scrollbar{display:none}
+  .nav-btn,.overview-btn{font-family:'Oswald',sans-serif;font-weight:500;font-size:12px;letter-spacing:1px;
+    padding:6px 12px;border:1px solid var(--navy-light);border-radius:4px;background:var(--navy);color:var(--steel);
+    cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0}
+  .overview-btn{border-color:var(--gold);color:var(--gold)}
+  .overview-btn.active{background:var(--gold);color:var(--navy)}
+  .nav-btn.a-pre{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+  .nav-btn.a-cat1{background:var(--cat1);color:#fff;border-color:var(--cat1)}
+  .nav-btn.a-cat2{background:var(--cat2);color:#fff;border-color:var(--cat2)}
+  .nav-btn.a-found{background:var(--son);color:#fff;border-color:var(--son)}
+
+  .content{padding:16px 12px 120px}
+
+  /* ── Week view ── */
+  .week-title{font-family:'Oswald',sans-serif;font-size:18px;font-weight:600;letter-spacing:2px;color:var(--gold);margin-bottom:2px}
+  .week-title.cat1{color:var(--cat1)}.week-title.cat2{color:var(--cat2)}.week-title.found{color:var(--son)}
+  .week-theme{font-size:13px;color:var(--steel);margin-bottom:4px;font-style:italic}
+  .phase-badge{display:inline-block;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:1.5px;
+    padding:2px 8px;border-radius:3px;margin-bottom:8px}
+  .phase-badge.pre{background:rgba(197,164,78,.15);color:var(--gold)}
+  .phase-badge.cat1{background:rgba(58,123,213,.15);color:var(--cat1)}
+  .phase-badge.cat2{background:rgba(231,76,60,.15);color:var(--cat2)}
+  .phase-badge.found{background:rgba(230,126,34,.15);color:var(--son)}
+
+  /* ── Repeat controls ── */
+  .repeat-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;
+    padding:8px 12px;background:var(--navy);border:1px solid var(--navy-light);border-radius:6px}
+  .repeat-bar .rnd-label{font-family:'Oswald',sans-serif;font-size:12px;color:var(--steel);letter-spacing:1px}
+  .repeat-bar .rnd-label span{color:var(--white);font-weight:600}
+  .repeat-btns{display:flex;gap:8px}
+  .repeat-btn{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:1px;padding:4px 10px;
+    border:1px solid var(--navy-light);border-radius:4px;background:var(--navy-mid);color:var(--steel);cursor:pointer;transition:all .2s}
+  .repeat-btn:hover{border-color:var(--gold);color:var(--gold)}
+  .repeat-btn.reset{border-color:var(--cat2);color:var(--cat2)}
+
+  /* ── Sections ── */
+  .section{background:var(--navy);border:1px solid var(--navy-light);border-radius:6px;margin-bottom:12px;overflow:hidden}
+  .section-header{background:var(--navy-mid);padding:10px 14px;font-family:'Oswald',sans-serif;font-weight:500;
+    font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-light);display:flex;
+    justify-content:space-between;align-items:center;cursor:pointer}
+  .section-header .chevron{transition:transform .2s;font-size:12px;color:var(--steel)}
+  .section-header.collapsed .chevron{transform:rotate(-90deg)}
+  .section-body{padding:12px 14px}
+  .section-body.hidden{display:none}
+
+  .exercise-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;
+    border-bottom:1px solid rgba(138,155,181,.1)}
+  .exercise-row:last-child{border-bottom:none}
+  .exercise-name{font-size:14px;color:var(--white);flex:1}
+  .exercise-detail{font-size:13px;color:var(--steel);text-align:right;margin-right:12px}
+  .check-btn{width:28px;height:28px;border-radius:50%;border:2px solid var(--navy-light);background:transparent;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;
+    color:transparent;font-size:14px}
+  .check-btn.done{background:var(--green);border-color:var(--green);color:#fff}
+
+  .run-days{display:grid;gap:8px}
+  .run-days.cols-3{grid-template-columns:repeat(3,1fr)}
+  .run-days.cols-4{grid-template-columns:repeat(4,1fr)}
+  .run-days.cols-5{grid-template-columns:repeat(5,1fr)}
+  .run-day{background:var(--navy-mid);border-radius:4px;padding:10px 4px;text-align:center;
+    border:1px solid var(--navy-light);cursor:pointer;transition:all .2s}
+  .run-day.done{border-color:var(--green);background:rgba(46,204,113,.1)}
+  .run-day .day-label{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:1px;color:var(--steel);margin-bottom:2px}
+  .run-day .day-dist{font-family:'Oswald',sans-serif;font-size:18px;font-weight:600;color:var(--white)}
+  .run-day .day-pace{font-size:11px;color:var(--steel);margin-top:2px}
+  .total-miles{text-align:center;margin-top:8px;font-family:'Oswald',sans-serif;font-size:13px;color:var(--gold);letter-spacing:1px}
+
+  .cardio-block{text-align:center;padding:8px 0}
+  .cardio-block .cardio-time{font-family:'Oswald',sans-serif;font-size:28px;font-weight:600;color:var(--white)}
+  .cardio-block .cardio-label{font-size:12px;color:var(--steel);margin-top:2px}
+  .cardio-dots{display:flex;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .cardio-dot{width:24px;height:24px;border-radius:50%;border:2px solid var(--navy-light);background:transparent;
+    cursor:pointer;transition:all .2s;font-size:10px;display:flex;align-items:center;justify-content:center;
+    color:var(--steel);font-family:'Oswald',sans-serif}
+  .cardio-dot.done{background:var(--green);border-color:var(--green);color:#fff}
+
+  .notes{margin-top:12px;padding:12px 14px;background:rgba(197,164,78,.05);border:1px solid rgba(197,164,78,.15);
+    border-radius:6px;font-size:13px;color:var(--steel);line-height:1.5}
+  .notes strong{color:var(--gold-light)}
+
+  .progress-bar-bg{width:100%;height:4px;background:var(--navy-light);border-radius:2px;margin-top:8px}
+  .progress-bar-fill{height:100%;border-radius:2px;transition:width .3s;background:var(--gold)}
+  .progress-bar-fill.cat1{background:var(--cat1)}.progress-bar-fill.cat2{background:var(--cat2)}.progress-bar-fill.found{background:var(--son)}
+
+  .overview-grid{display:grid;gap:10px}
+  .overview-week{background:var(--navy);border:1px solid var(--navy-light);border-radius:6px;padding:12px}
+  .overview-week h3{font-family:'Oswald',sans-serif;font-size:13px;color:var(--gold);letter-spacing:1px;margin-bottom:4px}
+  .overview-week h3.cat1{color:var(--cat1)}.overview-week h3.cat2{color:var(--cat2)}.overview-week h3.found{color:var(--son)}
+  .overview-week .ov-line{font-size:12px;color:var(--steel);padding:1px 0}
+  .overview-week .ov-line span{color:var(--white)}
+
+  .rest-week{text-align:center;padding:24px 16px;background:var(--navy);border:1px solid var(--navy-light);border-radius:6px}
+  .rest-week h3{font-family:'Oswald',sans-serif;font-size:16px;color:var(--gold);margin-bottom:8px}
+  .rest-week p{font-size:13px;color:var(--steel);line-height:1.5}
+
+  .milestone{margin-top:12px;padding:10px 14px;background:rgba(46,204,113,.08);border:1px solid rgba(46,204,113,.2);
+    border-radius:6px;font-size:13px;color:var(--green);text-align:center;font-family:'Oswald',sans-serif;letter-spacing:1px}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <button class="person-tab active-dad" id="ptab-dad" onclick="switchPerson('dad')">Dad</button>
+  <button class="person-tab" id="ptab-son" onclick="switchPerson('son')">Son</button>
+</div>
+<div class="phase-tabs" id="phase-tabs"></div>
+<div class="nav" id="nav"></div>
+<div class="content" id="content"></div>
+
+<script>
+// ═══════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════
+const dadPhases = {
+  pre:[
+    {week:1,theme:"Establish the habit. Move easy, stay consistent.",
+      run:{days:["MON","WED","FRI"],distances:[1,1,1],pace:"10:00+",total:3},
+      pt:[{name:"Push Ups",detail:"2 × 10"},{name:"Planks",detail:"2 × 20 sec"},{name:"Pull Ups",detail:"2 × 1 (or negatives)"}],
+      cardio:{minutes:20,days:3,note:"Easy walk, conversational pace"},
+      notes:"Walk/run intervals are fine — just cover the distance. If you can't do a pull up, do slow negatives. The goal is showing up."},
+    {week:2,theme:"Add a little volume. Same easy effort.",
+      run:{days:["MON","WED","FRI"],distances:[1,1.5,1],pace:"10:00",total:3.5},
+      pt:[{name:"Push Ups",detail:"3 × 10"},{name:"Planks",detail:"3 × 20 sec"},{name:"Pull Ups",detail:"3 × 1"}],
+      cardio:{minutes:20,days:3,note:"Brisk walk, push the pace"},
+      notes:"Extra cardio on off-days (Tue/Thu/Sat). Build aerobic base without doubling impact."},
+    {week:3,theme:"First real test — a 2-mile run appears.",
+      run:{days:["MON","WED","FRI"],distances:[1.5,1,2],pace:"9:30",total:4.5},
+      pt:[{name:"Push Ups",detail:"3 × 12"},{name:"Planks",detail:"3 × 25 sec"},{name:"Pull Ups",detail:"3 × 2"}],
+      cardio:{minutes:25,days:3,note:"Walk/jog intervals: 3 min walk, 2 min jog"},
+      notes:"Friday 2-miler previews Cat I Week 1. Don't chase the clock — just finish at a comfortable pace."},
+    {week:4,theme:"Recovery week. Hold volume, sharpen form.",
+      run:{days:["MON","WED","FRI"],distances:[1.5,1.5,1.5],pace:"9:30",total:4.5},
+      pt:[{name:"Push Ups",detail:"3 × 15"},{name:"Planks",detail:"3 × 30 sec"},{name:"Pull Ups",detail:"3 × 2"}],
+      cardio:{minutes:25,days:4,note:"Walk/jog intervals: 2 min walk, 3 min jog"},
+      notes:"First deload. Same mileage spread evenly. Focus on form — full range push-ups, no sagging plank hips."},
+    {week:5,theme:"Push the ceiling — longest run yet.",
+      run:{days:["MON","WED","FRI"],distances:[2,1.5,2],pace:"9:15",total:5.5},
+      pt:[{name:"Push Ups",detail:"4 × 12"},{name:"Planks",detail:"4 × 30 sec"},{name:"Pull Ups",detail:"3 × 3"}],
+      cardio:{minutes:30,days:4,note:"Light jog, easy effort"},
+      notes:"Matching Cat I Week 1 run distance on two of three days. Pull ups hit 3×3 — Cat I Week 1 standard."},
+    {week:6,theme:"Volume climbing. Mental toughness week.",
+      run:{days:["MON","WED","FRI"],distances:[2,2,2],pace:"9:00",total:6},
+      pt:[{name:"Push Ups",detail:"4 × 15"},{name:"Planks",detail:"4 × 35 sec"},{name:"Pull Ups",detail:"3 × 3"}],
+      cardio:{minutes:30,days:4,note:"Easy jog, 10:00+ pace"},
+      notes:"Matches Cat I Week 1 running exactly — 2 mi × 3 days = 6 miles at 9:00 pace. You're rehearsing the real program."},
+    {week:7,theme:"Deload before launch. Recover and sharpen.",
+      run:{days:["MON","WED","FRI"],distances:[1.5,2,1.5],pace:"9:00",total:5},
+      pt:[{name:"Push Ups",detail:"3 × 15"},{name:"Planks",detail:"3 × 35 sec"},{name:"Pull Ups",detail:"3 × 3"}],
+      cardio:{minutes:30,days:4,note:"Easy walk/jog, recovery effort"},
+      notes:"Intentional pullback. Arrive at Week 8 fresh, not fatigued."},
+    {week:8,theme:"Dress rehearsal — full Cat I Week 1 preview.",
+      run:{days:["MON","WED","FRI"],distances:[2,2,2],pace:"8:30",total:6},
+      pt:[{name:"Push Ups",detail:"4 × 15"},{name:"Planks",detail:"4 × 40 sec"},{name:"Pull Ups",detail:"3 × 3"}],
+      cardio:{minutes:30,days:5,note:"Easy jog, 5 days"},
+      notes:"This IS Cat I Week 1 at target pace (8:30/mile). Complete this and you're ready for Category I."},
+  ],
+  cat1:[
+    {week:1,theme:"Category I begins. 8:30 pace, 3 days.",
+      run:{days:["MON","WED","FRI"],distances:[2,2,2],pace:"8:30",total:6},
+      pt:[{name:"Push Ups",detail:"4 × 15"},{name:"Planks",detail:"4 × 30 sec"},{name:"Pull Ups",detail:"3 × 3"}],
+      cardio:{minutes:30,days:4,note:"Easy jog on off-days"},
+      notes:"The real program starts. Keep runs at 8:30 pace. Consistency is the goal."},
+    {week:2,theme:"Hold steady. Same volume, build confidence.",
+      run:{days:["MON","WED","FRI"],distances:[2,2,2],pace:"8:30",total:6},
+      pt:[{name:"Push Ups",detail:"5 × 20"},{name:"Planks",detail:"5 × 35 sec"},{name:"Pull Ups",detail:"3 × 3"}],
+      cardio:{minutes:30,days:4,note:"Easy jog on off-days"},
+      notes:"Same running. PT volume jumps — push-ups to 5×20. Stay disciplined on form."},
+    {week:3,theme:"Rest week — no running. Stress fracture prevention.",rest:true,
+      pt:[{name:"Push Ups",detail:"5 × 25"},{name:"Planks",detail:"5 × 40 sec"},{name:"Pull Ups",detail:"3 × 4"}],
+      cardio:{minutes:30,days:5,note:"Walking only — no running this week"},
+      notes:"NO RUNNING. The SEAL program builds this in to prevent stress fractures. PT and walking only."},
+    {week:4,theme:"Running returns — 3 miles per session.",
+      run:{days:["MON","WED","FRI"],distances:[3,3,3],pace:"8:30",total:9},
+      pt:[{name:"Push Ups",detail:"5 × 25"},{name:"Planks",detail:"5 × 40 sec"},{name:"Pull Ups",detail:"3 × 4"}],
+      cardio:{minutes:35,days:4,note:"Easy jog on off-days"},
+      notes:"Big jump — 3 miles per run, 9 miles/week. Ease back in after the rest week."},
+    {week:5,theme:"Four run days. Volume building.",
+      run:{days:["MON","WED","THU","FRI"],distances:[2,3,4,2],pace:"8:30",total:11},
+      pt:[{name:"Push Ups",detail:"6 × 25"},{name:"Planks",detail:"6 × 40 sec"},{name:"Pull Ups",detail:"2 × 8"}],
+      cardio:{minutes:40,days:4,note:"Easy jog on off-days"},
+      notes:"First 4-day run week. Thursday is your long run. Pull-ups shift to 2×8."},
+    {week:6,theme:"Hold the new volume. Grind it out.",
+      run:{days:["MON","WED","THU","FRI"],distances:[2,3,4,2],pace:"8:30",total:11},
+      pt:[{name:"Push Ups",detail:"6 × 25"},{name:"Planks",detail:"6 × 45 sec"},{name:"Pull Ups",detail:"2 × 8"}],
+      cardio:{minutes:45,days:4,note:"Moderate jog on off-days"},
+      notes:"Same running as Week 5 — let your body adapt. Plank holds climbing."},
+    {week:7,theme:"Mileage climbing toward the 16-mile goal.",
+      run:{days:["MON","WED","THU","FRI"],distances:[4,4,5,3],pace:"8:30",total:16},
+      pt:[{name:"Push Ups",detail:"6 × 30"},{name:"Planks",detail:"6 × 45 sec"},{name:"Pull Ups",detail:"2 × 10"}],
+      cardio:{minutes:50,days:4,note:"Moderate jog on off-days"},
+      notes:"16 miles — the Cat I goal. Thursday's 5-miler is your biggest run yet. 6×30 = 180 push-ups."},
+    {week:8,theme:"Hold at 16 miles. Proving ground.",
+      run:{days:["MON","WED","THU","FRI"],distances:[4,4,5,3],pace:"8:30",total:16},
+      pt:[{name:"Push Ups",detail:"6 × 30"},{name:"Planks",detail:"6 × 50 sec"},{name:"Pull Ups",detail:"2 × 10"}],
+      cardio:{minutes:55,days:4,note:"Moderate jog on off-days"},
+      notes:"Same 16-mile week. Hold this for two weeks and you've met the Cat I standard."},
+    {week:9,theme:"Final Cat I week. Prepare for Category II.",
+      run:{days:["MON","WED","THU","FRI"],distances:[4,4,5,3],pace:"8:30",total:16},
+      pt:[{name:"Push Ups",detail:"6 × 30"},{name:"Planks",detail:"6 × 55 sec"},{name:"Pull Ups",detail:"3 × 10"}],
+      cardio:{minutes:60,days:4,note:"Steady jog on off-days"},
+      notes:"Pull-ups to 3×10 = 30 total. Hold 16 mi/week for 3 weeks and you're ready for Cat II."},
+  ],
+  cat2:[
+    {week:1,theme:"Category II begins. Five run days.",
+      run:{days:["MON","TUE","WED","THU","FRI"],distances:[3,5,4,5,2],pace:"8:00",total:19},
+      pt:[{name:"Push Ups",detail:"6 × 30"},{name:"Planks",detail:"6 × 50 sec"},{name:"Pull Ups",detail:"3 × 10"},{name:"Dips",detail:"3 × 20"}],
+      cardio:{minutes:60,days:2,note:"Easy jog on weekends"},
+      notes:"Five run days, dips added. 19 miles this week."},
+    {week:2,theme:"Hold at 19. Let the body adapt.",
+      run:{days:["MON","TUE","WED","THU","FRI"],distances:[3,5,4,5,2],pace:"8:00",total:19},
+      pt:[{name:"Push Ups",detail:"6 × 30"},{name:"Planks",detail:"6 × 55 sec"},{name:"Pull Ups",detail:"3 × 10"},{name:"Dips",detail:"3 × 20"}],
+      cardio:{minutes:60,days:2,note:"Easy jog on weekends"},
+      notes:"Two weeks at 19 miles lets tendons catch up."},
+    {week:3,theme:"22 miles. Pushing deeper.",
+      run:{days:["MON","TUE","WED","THU","FRI"],distances:[4,5,6,4,3],pace:"8:00",total:22},
+      pt:[{name:"Push Ups",detail:"10 × 20"},{name:"Planks",detail:"10 × 40 sec"},{name:"Pull Ups",detail:"4 × 10"},{name:"Dips",detail:"10 × 15"}],
+      cardio:{minutes:45,days:2,note:"Moderate jog on weekends"},
+      notes:"PT shifts to higher sets for endurance. First 6-mile run. Alternate exercises between sets."},
+    {week:4,theme:"Hold 22. Endurance is the game.",
+      run:{days:["MON","TUE","WED","THU","FRI"],distances:[4,5,6,4,3],pace:"8:00",total:22},
+      pt:[{name:"Push Ups",detail:"10 × 20"},{name:"Planks",detail:"10 × 45 sec"},{name:"Pull Ups",detail:"4 × 10"},{name:"Dips",detail:"10 × 15"}],
+      cardio:{minutes:45,days:2,note:"Moderate jog on weekends"},
+      notes:"Same volume. Alternate exercises each set — push-ups, planks, pull-ups, dips, repeat."},
+    {week:5,theme:"24 miles. The grind continues.",
+      run:{days:["MON","TUE","WED","THU","FRI"],distances:[5,5,6,4,4],pace:"7:45",total:24},
+      pt:[{name:"Push Ups",detail:"15 × 20"},{name:"Planks",detail:"15 × 40 sec"},{name:"Pull Ups",detail:"4 × 12"},{name:"Dips",detail:"15 × 15"}],
+      cardio:{minutes:45,days:2,note:"Steady jog on weekends"},
+      notes:"300 push-ups, 225 dips per session. Pure endurance."},
+    {week:6,theme:"27 miles. Closing in on the goal.",
+      run:{days:["MON","TUE","WED","THU","FRI"],distances:[5,6,6,6,4],pace:"7:45",total:27},
+      pt:[{name:"Push Ups",detail:"20 × 20"},{name:"Planks",detail:"20 × 35 sec"},{name:"Pull Ups",detail:"5 × 12"},{name:"Dips",detail:"20 × 15"}],
+      cardio:{minutes:45,days:2,note:"Steady jog on weekends"},
+      notes:"400 push-ups, 300 dips per session. Mental toughness over strength."},
+    {week:7,theme:"30 miles. Category II complete.",
+      run:{days:["MON","TUE","WED","THU","FRI"],distances:[6,6,6,6,6],pace:"7:30",total:30},
+      pt:[{name:"Push Ups",detail:"20 × 20"},{name:"Planks",detail:"20 × 40 sec"},{name:"Pull Ups",detail:"5 × 12"},{name:"Dips",detail:"20 × 15"}],
+      cardio:{minutes:30,days:2,note:"Easy jog — maintain"},
+      notes:"30 miles at 7:30 pace. Cat II goal achieved. Maintain and work on speed. You're ready."},
+  ]
+};
+
+const sonPhases = {
+  found:[
+    {week:1,theme:"Wall push-ups. Build the pattern, build the habit.",
+      run:{days:["MON","WED","FRI"],distances:[0.5,0.5,0.5],pace:"any",total:1.5},
+      pt:[{name:"Wall Push-Ups",detail:"3 × 15"},{name:"Planks",detail:"2 × 15 sec"},{name:"Pull-Up Negatives",detail:"3 × 3 (5 sec down)"}],
+      cardio:{minutes:15,days:3,note:"Easy walk"},
+      notes:"Stand 2 feet from a wall, hands at chest height. Full push-up motion against the wall. For negatives, jump to top of bar and lower yourself for 5 seconds. Running can be walk/jog."},
+    {week:2,theme:"Wall push-ups volume. More reps, same angle.",
+      run:{days:["MON","WED","FRI"],distances:[0.5,0.75,0.5],pace:"any",total:1.75},
+      pt:[{name:"Wall Push-Ups",detail:"3 × 20"},{name:"Planks",detail:"3 × 15 sec"},{name:"Pull-Up Negatives",detail:"3 × 4 (5 sec down)"}],
+      cardio:{minutes:15,days:3,note:"Brisk walk"},
+      notes:"Same wall push-ups, more reps. By end of week, 20 reps should feel smooth. Add a little jog if you feel good."},
+    {week:3,theme:"Counter push-ups. Drop the angle.",
+      run:{days:["MON","WED","FRI"],distances:[0.75,0.75,1],pace:"11:00",total:2.5},
+      pt:[{name:"Counter Push-Ups",detail:"3 × 12"},{name:"Planks",detail:"3 × 20 sec"},{name:"Pull-Up Negatives",detail:"3 × 5 (5 sec down)"}],
+      cardio:{minutes:20,days:3,note:"Walk/jog mix"},
+      notes:"Move to a counter or table — roughly waist height. If 12 is too hard, stay at the wall one more week. First 1-mile run on Friday."},
+    {week:4,theme:"Counter push-ups volume. Own this angle.",
+      run:{days:["MON","WED","FRI"],distances:[1,0.75,1],pace:"11:00",total:2.75},
+      pt:[{name:"Counter Push-Ups",detail:"3 × 15"},{name:"Planks",detail:"3 × 25 sec"},{name:"Pull-Up Negatives",detail:"3 × 5 (4 sec down)"}],
+      cardio:{minutes:20,days:3,note:"Walk/jog mix"},
+      notes:"Building reps at counter height. Negatives get faster (4 sec) — you're controlling more weight. 15 clean counter push-ups means you're ready to drop lower."},
+    {week:5,theme:"Bench/chair push-ups. Getting closer to the floor.",
+      run:{days:["MON","WED","FRI"],distances:[1,1,1],pace:"10:30",total:3},
+      pt:[{name:"Bench Push-Ups",detail:"3 × 10"},{name:"Planks",detail:"3 × 25 sec"},{name:"Pull-Up Negatives",detail:"3 × 5 (3 sec down)"}],
+      cardio:{minutes:20,days:3,note:"Light jog"},
+      notes:"Sturdy chair or bench — roughly knee height. Close to a real push-up angle. If 10 is too hard, do as many bench as you can, finish at the counter. Running hits 3 mi/week."},
+    {week:6,theme:"Bench volume + first real push-ups.",
+      run:{days:["MON","WED","FRI"],distances:[1,1,1],pace:"10:00",total:3},
+      pt:[{name:"Bench Push-Ups",detail:"3 × 12"},{name:"Floor Push-Ups",detail:"3 × max (test it)"},{name:"Planks",detail:"3 × 30 sec"},{name:"Pull-Up Negatives",detail:"2 × 5 (3 sec down)"}],
+      cardio:{minutes:25,days:3,note:"Easy jog"},
+      notes:"Big week — testing floor push-ups. Do bench push-ups first, then drop to the floor and do as many clean reps as you can (even 1–3). Write down your max."},
+    {week:7,theme:"Floor push-ups are the main event now.",
+      run:{days:["MON","WED","FRI"],distances:[1,1,1.5],pace:"10:00",total:3.5},
+      pt:[{name:"Floor Push-Ups",detail:"4 × 3–5"},{name:"Bench Push-Ups",detail:"2 × 12 (burnout)"},{name:"Planks",detail:"3 × 30 sec"},{name:"Pull-Up Negatives",detail:"2 × 5 (3 sec down)"}],
+      cardio:{minutes:25,days:3,note:"Easy jog"},
+      notes:"Floor push-ups lead the workout. 4 sets of whatever you can (aim 3–5). Finish with 2 sets of bench for extra volume. By end of week aim for 5 clean floor push-ups."},
+    {week:8,theme:"Graduation week. Ready to join dad's program.",
+      run:{days:["MON","WED","FRI"],distances:[1,1,1.5],pace:"10:00",total:3.5},
+      pt:[{name:"Floor Push-Ups",detail:"3 × 5–8"},{name:"Planks",detail:"3 × 30 sec"},{name:"Pull-Up Negatives",detail:"3 × 5"}],
+      cardio:{minutes:25,days:3,note:"Easy jog"},
+      notes:"If you can do 3 sets of 5+ floor push-ups, you're ready for dad's Pre-Cat I Week 1. Your numbers will be lower — that's fine. The program builds volume over time.",
+      milestone:"READY FOR PRE-CAT I → Start the main program with dad"},
+  ]
+};
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+let currentPerson = 'dad';
+let currentPhase = 'pre';
+let state = JSON.parse(localStorage.getItem('sealTracker') || '{}');
+// Rounds track repeat-week counts: { "dad_pre_3": 2 } means dad repeated pre week 3 twice
+let rounds = JSON.parse(localStorage.getItem('sealRounds') || '{}');
+
+function save() { localStorage.setItem('sealTracker', JSON.stringify(state)); localStorage.setItem('sealRounds', JSON.stringify(rounds)); }
+function getRound(person, phase, week) { return rounds[`${person}_${phase}_${week}`] || 1; }
+function setRound(person, phase, week, r) { rounds[`${person}_${phase}_${week}`] = r; save(); }
+function getKey(person, phase, week, round, type, index) { return `${person}_${phase}_w${week}_r${round}_${type}_${index}`; }
+function isChecked(person, phase, week, round, type, index) { return !!state[getKey(person, phase, week, round, type, index)]; }
+
+function toggle(person, phase, week, round, type, index, el) {
+  const key = getKey(person, phase, week, round, type, index);
+  state[key] = !state[key]; save();
+  if (el) el.classList.toggle('done', state[key]);
+  if (el && el.classList.contains('check-btn')) el.textContent = state[key] ? '✓' : '';
+  updateProgress(person, phase, week, round);
+}
+
+function updateProgress(person, phase, week, round) {
+  const data = person === 'dad' ? dadPhases : sonPhases;
+  const w = data[phase][week - 1];
+  let total = w.pt.length + (w.cardio ? w.cardio.days : 0) + (w.run ? w.run.days.length : 0);
+  let done = 0;
+  if (w.run) w.run.days.forEach((_, i) => { if (isChecked(person, phase, week, round, 'run', i)) done++; });
+  w.pt.forEach((_, i) => { if (isChecked(person, phase, week, round, 'pt', i)) done++; });
+  if (w.cardio) for (let i = 0; i < w.cardio.days; i++) { if (isChecked(person, phase, week, round, 'cardio', i)) done++; }
+  const pct = total > 0 ? (done / total) * 100 : 0;
+  const bar = document.getElementById('week-progress');
+  if (bar) bar.style.width = pct + '%';
+}
+
+// ═══════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════
+function switchPerson(p) {
+  currentPerson = p;
+  document.querySelectorAll('.person-tab').forEach(t => t.className = 'person-tab');
+  document.getElementById(`ptab-${p}`).classList.add(p === 'dad' ? 'active-dad' : 'active-son');
+  currentPhase = p === 'dad' ? 'pre' : 'found';
+  buildPhaseTabs();
+  buildNav();
+  showOverview();
+}
+
+function buildPhaseTabs() {
+  const el = document.getElementById('phase-tabs');
+  if (currentPerson === 'dad') {
+    el.innerHTML = `
+      <button class="phase-tab active-pre" id="pt-pre" onclick="switchPhase('pre')">Pre-Cat I</button>
+      <button class="phase-tab" id="pt-cat1" onclick="switchPhase('cat1')">Cat I</button>
+      <button class="phase-tab" id="pt-cat2" onclick="switchPhase('cat2')">Cat II</button>`;
+  } else {
+    el.innerHTML = `<button class="phase-tab active-found" id="pt-found" onclick="switchPhase('found')">Foundation</button>`;
+  }
+}
+
+function switchPhase(p) {
+  currentPhase = p;
+  document.querySelectorAll('.phase-tab').forEach(t => t.className = 'phase-tab');
+  const cls = p === 'pre' ? 'active-pre' : p === 'cat1' ? 'active-cat1' : p === 'cat2' ? 'active-cat2' : 'active-found';
+  document.getElementById(`pt-${p}`)?.classList.add(cls);
+  buildNav();
+  showOverview();
+}
+
+function buildNav() {
+  const nav = document.getElementById('nav');
+  nav.innerHTML = '';
+  const allBtn = document.createElement('button');
+  allBtn.className = 'overview-btn active';
+  allBtn.textContent = 'ALL';
+  allBtn.onclick = showOverview;
+  nav.appendChild(allBtn);
+  const data = currentPerson === 'dad' ? dadPhases : sonPhases;
+  data[currentPhase].forEach(w => {
+    const btn = document.createElement('button');
+    btn.className = 'nav-btn';
+    btn.textContent = `WK ${w.week}`;
+    btn.onclick = () => showWeek(w.week);
+    nav.appendChild(btn);
+  });
+}
+
+// ═══════════════════════════════════════
+// OVERVIEW
+// ═══════════════════════════════════════
+function showOverview() {
+  document.querySelectorAll('.nav-btn').forEach(b => b.className = 'nav-btn');
+  document.querySelector('.overview-btn')?.classList.add('active');
+  const data = currentPerson === 'dad' ? dadPhases : sonPhases;
+  const weeks = data[currentPhase];
+  const cc = currentPhase === 'cat1' ? 'cat1' : currentPhase === 'cat2' ? 'cat2' : currentPhase === 'found' ? 'found' : '';
+  const content = document.getElementById('content');
+  let html = '<div class="overview-grid">';
+  weeks.forEach(w => {
+    const rnd = getRound(currentPerson, currentPhase, w.week);
+    const rndTag = rnd > 1 ? ` <span style="color:var(--green)">(Round ${rnd})</span>` : '';
+    if (w.rest) {
+      html += `<div class="overview-week"><h3 class="${cc}">Week ${w.week} — REST${rndTag}</h3>
+        <div class="ov-line">PT: <span>${w.pt.map(p=>p.detail+' '+p.name).join(' · ')}</span></div>
+        <div class="ov-line">Cardio: <span>${w.cardio.minutes} min × ${w.cardio.days} days (walking)</span></div></div>`;
+    } else {
+      html += `<div class="overview-week"><h3 class="${cc}">Week ${w.week}${rndTag}</h3>
+        <div class="ov-line">Run: <span>${w.run.total} mi</span> (${w.run.distances.join('/')} mi) @ ${w.run.pace}</div>
+        <div class="ov-line">PT: <span>${w.pt.map(p=>p.detail+' '+p.name).join(' · ')}</span></div>
+        <div class="ov-line">Cardio: <span>${w.cardio.minutes} min × ${w.cardio.days} days</span></div>
+        ${w.milestone ? `<div class="ov-line" style="color:var(--green);margin-top:4px">★ ${w.milestone}</div>` : ''}
+      </div>`;
+    }
+  });
+  html += '</div>';
+  content.innerHTML = html;
+}
+
+// ═══════════════════════════════════════
+// WEEK VIEW
+// ═══════════════════════════════════════
+function showWeek(num) {
+  document.querySelectorAll('.nav-btn').forEach(b => b.className = 'nav-btn');
+  document.querySelector('.overview-btn')?.classList.remove('active');
+  const btns = document.querySelectorAll('.nav-btn');
+  const acls = currentPhase === 'pre' ? 'a-pre' : currentPhase === 'cat1' ? 'a-cat1' : currentPhase === 'cat2' ? 'a-cat2' : 'a-found';
+  if (btns[num - 1]) btns[num - 1].classList.add(acls);
+
+  const person = currentPerson;
+  const phase = currentPhase;
+  const data = person === 'dad' ? dadPhases : sonPhases;
+  const w = data[phase][num - 1];
+  const cc = phase === 'cat1' ? 'cat1' : phase === 'cat2' ? 'cat2' : phase === 'found' ? 'found' : '';
+  const pLabel = phase === 'pre' ? 'PRE-CAT I' : phase === 'cat1' ? 'CATEGORY I' : phase === 'cat2' ? 'CATEGORY II' : 'FOUNDATION';
+  const round = getRound(person, phase, num);
+  const content = document.getElementById('content');
+
+  let html = `
+    <div class="phase-badge ${phase === 'pre' ? 'pre' : cc}">${pLabel}</div>
+    <div class="week-title ${cc}">WEEK ${w.week}</div>
+    <div class="week-theme">${w.theme}</div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill ${cc}" id="week-progress" style="width:0%"></div></div>
+
+    <div class="repeat-bar">
+      <div class="rnd-label">Round <span>${round}</span></div>
+      <div class="repeat-btns">
+        <button class="repeat-btn" onclick="repeatWeek(${num})">Repeat Week ↻</button>
+        <button class="repeat-btn reset" onclick="resetWeek(${num})">Reset ✕</button>
+      </div>
+    </div>`;
+
+  // Running
+  if (w.rest) {
+    html += `<div class="rest-week"><h3>REST WEEK — NO RUNNING</h3><p>High risk of stress fractures. PT and walking cardio only.</p></div><div style="height:12px"></div>`;
+  } else {
+    const cols = w.run.days.length <= 3 ? 'cols-3' : w.run.days.length <= 4 ? 'cols-4' : 'cols-5';
+    html += `<div class="section">
+      <div class="section-header" onclick="toggleSection(this)">RUNNING — ${w.run.total} MI TOTAL<span class="chevron">▼</span></div>
+      <div class="section-body">
+        <div class="run-days ${cols}">
+          ${w.run.days.map((day, i) => `
+            <div class="run-day ${isChecked(person,phase,num,round,'run',i)?'done':''}" onclick="toggle('${person}','${phase}',${num},${round},'run',${i},this)">
+              <div class="day-label">${day}</div>
+              <div class="day-dist">${w.run.distances[i]}</div>
+              <div class="day-pace">${w.run.pace}/mi</div>
+            </div>`).join('')}
+        </div>
+        <div class="total-miles">${w.run.total} MILES THIS WEEK</div>
+      </div></div>`;
+  }
+
+  // PT
+  html += `<div class="section">
+    <div class="section-header" onclick="toggleSection(this)">PT — MON / WED / FRI<span class="chevron">▼</span></div>
+    <div class="section-body">
+      ${w.pt.map((ex, i) => `
+        <div class="exercise-row">
+          <div class="exercise-name">${ex.name}</div>
+          <div class="exercise-detail">${ex.detail}</div>
+          <button class="check-btn ${isChecked(person,phase,num,round,'pt',i)?'done':''}" onclick="toggle('${person}','${phase}',${num},${round},'pt',${i},this)">${isChecked(person,phase,num,round,'pt',i)?'✓':''}</button>
+        </div>`).join('')}
+    </div></div>`;
+
+  // Cardio
+  if (w.cardio) {
+    html += `<div class="section">
+      <div class="section-header" onclick="toggleSection(this)">EXTRA CARDIO — ${w.cardio.minutes} MIN × ${w.cardio.days} DAYS<span class="chevron">▼</span></div>
+      <div class="section-body">
+        <div class="cardio-block">
+          <div class="cardio-time">${w.cardio.minutes} min</div>
+          <div class="cardio-label">${w.cardio.note}</div>
+          <div class="cardio-dots">
+            ${Array.from({length: w.cardio.days}, (_, i) => `
+              <button class="cardio-dot ${isChecked(person,phase,num,round,'cardio',i)?'done':''}" onclick="toggle('${person}','${phase}',${num},${round},'cardio',${i},this)">${i+1}</button>`).join('')}
+          </div>
+        </div>
+      </div></div>`;
+  }
+
+  html += `<div class="notes"><strong>Coach Notes:</strong> ${w.notes}</div>`;
+  if (w.milestone) html += `<div class="milestone">★ ${w.milestone}</div>`;
+
+  content.innerHTML = html;
+  updateProgress(person, phase, num, round);
+}
+
+// ═══════════════════════════════════════
+// REPEAT / RESET
+// ═══════════════════════════════════════
+function repeatWeek(num) {
+  const r = getRound(currentPerson, currentPhase, num);
+  setRound(currentPerson, currentPhase, num, r + 1);
+  showWeek(num);
+}
+
+function resetWeek(num) {
+  const round = getRound(currentPerson, currentPhase, num);
+  const prefix = `${currentPerson}_${currentPhase}_w${num}_r${round}_`;
+  Object.keys(state).forEach(k => { if (k.startsWith(prefix)) delete state[k]; });
+  save();
+  showWeek(num);
+}
+
+function toggleSection(header) {
+  header.classList.toggle('collapsed');
+  header.nextElementSibling.classList.toggle('hidden');
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+buildPhaseTabs();
+buildNav();
+showOverview();
+</script>
+</body>
+</html>
